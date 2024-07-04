@@ -1,0 +1,20 @@
+<template>
+    <lightning-card title="Phone Number Validator" icon-name="custom:custom63">
+      <div class="slds-p-around_medium">
+        <lightning-combobox
+          name="countryCode"
+          label="Country Code"
+          value={countryCode}
+          placeholder="Select Country Code"
+          options={countryOptions}
+          onchange={handleCountryCodeChange}>
+        </lightning-combobox>
+        <lightning-input label="Phone Number" value={phoneNumber} onchange={handlePhoneNumberChange}></lightning-input>
+        <lightning-button label="Validate" onclick={validatePhoneNumber}></lightning-button>
+        <template if:true={errorMessage}>
+          <div class="slds-text-color_error">{errorMessage}</div>
+        </template>
+      </div>
+    </lightning-card>
+  </template>
+  
