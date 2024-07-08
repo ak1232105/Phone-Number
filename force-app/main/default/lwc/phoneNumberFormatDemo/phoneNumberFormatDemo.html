@@ -10,16 +10,18 @@
                 onchange={handleCountryCodeChange}>
             </lightning-combobox>
             <lightning-input label="Phone Number" value={phoneNumber} onchange={handlePhoneNumberChange}></lightning-input>
-            <lightning-button label="Validate" onclick={validatePhoneNumber}></lightning-button>
+            <div class="slds-m-top_medium">
+                <lightning-button label="Validate" onclick={validatePhoneNumber} class="slds-m-right_small"></lightning-button>
+                <lightning-button label="Format" onclick={formatPhoneNumber}></lightning-button>
+            </div>
             <template if:true={formattedNumber}>
-                <div class="slds-text-body_regular">Formatted Number: {formattedNumber}</div>
+                <div class="slds-text-body_regular slds-m-top_medium">Formatted Number: {formattedNumber}</div>
             </template>
             <template if:true={errorMessage}>
-                <div class="slds-text-color_error">{errorMessage}</div>
+                <div class="slds-text-color_error slds-m-top_medium">{errorMessage}</div>
             </template>
-            <lightning-button label="Format" onclick={formatPhoneNumber}></lightning-button>
             <template if:true={formattedPhoneNumber}>
-                <div class="slds-text-body_regular">Formatted Number: {formattedPhoneNumber}</div>
+                <div class="slds-text-body_regular slds-m-top_medium">Formatted Number: {formattedPhoneNumber}</div>
             </template>
         </div>
     </lightning-card>

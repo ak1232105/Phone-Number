@@ -39,7 +39,7 @@ export default class PhoneNumberFormatDemo extends LightningElement {
                     this.errorMessage = '';
                     this.formattedNumber = result.formattedNumber;
                 } else {
-                    this.errorMessage = result.errorMessage;
+                    this.errorMessage = result.errorMessage || 'The phone number you provided is invalid.';
                     this.formattedNumber = '';
                 }
                 this.template.querySelectorAll('lightning-input, lightning-combobox').forEach(input => input.reportValidity());
@@ -56,10 +56,17 @@ export default class PhoneNumberFormatDemo extends LightningElement {
         
         formatPhoneNumberApex({ phoneNumber: this.phoneNumber, regionCode: regionCode, format: 'INTERNATIONAL' })
             .then(result => {
-                this.formattedPhoneNumber = result;
+                if (result !== 'Invalid number') {
+                    this.errorMessage = '';
+                    this.formattedPhoneNumber = result;
+                } else {
+                    this.errorMessage = 'The phone number you provided is invalid.';
+                    this.formattedPhoneNumber = '';
+                }
             })
             .catch(error => {
-                this.formattedPhoneNumber = 'An error occurred while formatting the phone number.';
+                this.errorMessage = 'An error occurred while formatting the phone number.';
+                this.formattedPhoneNumber = '';
             });
     }
 }
