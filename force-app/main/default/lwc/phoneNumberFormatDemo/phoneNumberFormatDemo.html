@@ -12,8 +12,11 @@
             <lightning-input label="Phone Number" value={phoneNumber} onchange={handlePhoneNumberChange}></lightning-input>
             <div class="slds-m-top_medium">
                 <lightning-button label="Validate" onclick={validatePhoneNumber} class="slds-m-right_small"></lightning-button>
-                <lightning-button label="Format" onclick={formatPhoneNumber}></lightning-button>
+                
             </div>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
             <template if:true={formattedNumber}>
                 <div class="slds-text-body_regular slds-m-top_medium">Formatted Number: {formattedNumber}</div>
             </template>

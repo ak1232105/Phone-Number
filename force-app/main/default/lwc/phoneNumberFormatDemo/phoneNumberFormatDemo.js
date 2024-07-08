@@ -10,6 +10,8 @@ export default class PhoneNumberFormatDemo extends LightningElement {
     @track formattedNumber;
     @track formattedPhoneNumber;
     @track countryOptions = [];
+    @track isLoading = false;
+    @track isFormatDisabled = true;
 
     @wire(getAllCountryCodes)
     wiredCountryCodes({ error, data }) {
@@ -32,12 +34,16 @@ export default class PhoneNumberFormatDemo extends LightningElement {
 
     validatePhoneNumber() {
         const regionCode = this.countryCode.split(' ')[0];
+        this.isLoading = true;
+        this.isFormatDisabled = true;
         
         validatePhoneNumberApex({ phoneNumber: this.phoneNumber, regionCode: regionCode })
             .then(result => {
+                this.isLoading = false;
                 if (result.isValid) {
                     this.errorMessage = '';
                     this.formattedNumber = result.formattedNumber;
+                    this.isFormatDisabled = false;
                 } else {
                     this.errorMessage = result.errorMessage || 'The phone number you provided is invalid.';
                     this.formattedNumber = '';
@@ -45,6 +51,7 @@ export default class PhoneNumberFormatDemo extends LightningElement {
                 this.template.querySelectorAll('lightning-input, lightning-combobox').forEach(input => input.reportValidity());
             })
             .catch(error => {
+                this.isLoading = false;
                 this.errorMessage = 'An error occurred while validating the phone number.';
                 this.formattedNumber = '';
                 this.template.querySelectorAll('lightning-input, lightning-combobox').forEach(input => input.reportValidity());
