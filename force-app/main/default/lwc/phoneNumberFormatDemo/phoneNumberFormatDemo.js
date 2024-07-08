@@ -1,12 +1,14 @@
 import { LightningElement, track, wire } from 'lwc';
-import getAllCountryCodes from '@salesforce/apex/CountryCodeController.getAllCountryCodes';
+import getAllCountryCodes from '@salesforce/apex/PhoneNumberController.getAllCountryCodes';
 import validatePhoneNumberApex from '@salesforce/apex/PhoneNumberController.validatePhoneNumber';
+import formatPhoneNumberApex from '@salesforce/apex/PhoneNumberController.formatPhoneNumber';
 
 export default class PhoneNumberFormatDemo extends LightningElement {
     @track countryCode;
     @track phoneNumber;
     @track errorMessage;
     @track formattedNumber;
+    @track formattedPhoneNumber;
     @track countryOptions = [];
 
     @wire(getAllCountryCodes)
@@ -29,7 +31,6 @@ export default class PhoneNumberFormatDemo extends LightningElement {
     }
 
     validatePhoneNumber() {
-        // Extract the region code from the selected country code (e.g., "IN" from "IN (91)")
         const regionCode = this.countryCode.split(' ')[0];
         
         validatePhoneNumberApex({ phoneNumber: this.phoneNumber, regionCode: regionCode })
@@ -38,7 +39,7 @@ export default class PhoneNumberFormatDemo extends LightningElement {
                     this.errorMessage = '';
                     this.formattedNumber = result.formattedNumber;
                 } else {
-                    this.errorMessage = 'The phone number you provided is invalid.';
+                    this.errorMessage = result.errorMessage;
                     this.formattedNumber = '';
                 }
                 this.template.querySelectorAll('lightning-input, lightning-combobox').forEach(input => input.reportValidity());
@@ -47,6 +48,18 @@ export default class PhoneNumberFormatDemo extends LightningElement {
                 this.errorMessage = 'An error occurred while validating the phone number.';
                 this.formattedNumber = '';
                 this.template.querySelectorAll('lightning-input, lightning-combobox').forEach(input => input.reportValidity());
+            });
+    }
+
+    formatPhoneNumber() {
+        const regionCode = this.countryCode.split(' ')[0];
+        
+        formatPhoneNumberApex({ phoneNumber: this.phoneNumber, regionCode: regionCode, format: 'INTERNATIONAL' })
+            .then(result => {
+                this.formattedPhoneNumber = result;
+            })
+            .catch(error => {
+                this.formattedPhoneNumber = 'An error occurred while formatting the phone number.';
             });
     }
 }

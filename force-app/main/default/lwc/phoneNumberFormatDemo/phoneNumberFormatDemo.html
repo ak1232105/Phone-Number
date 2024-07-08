@@ -1,5 +1,5 @@
 <template>
-    <lightning-card title="Phone Number Validator" icon-name="custom:custom63">
+    <lightning-card title="Phone Number Utility" icon-name="custom:custom63">
         <div class="slds-p-around_medium">
             <lightning-combobox
                 name="countryCode"
@@ -16,6 +16,10 @@
             </template>
             <template if:true={errorMessage}>
                 <div class="slds-text-color_error">{errorMessage}</div>
+            </template>
+            <lightning-button label="Format" onclick={formatPhoneNumber}></lightning-button>
+            <template if:true={formattedPhoneNumber}>
+                <div class="slds-text-body_regular">Formatted Number: {formattedPhoneNumber}</div>
             </template>
         </div>
     </lightning-card>
